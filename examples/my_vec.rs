@@ -1,5 +1,4 @@
 use anyhow::Result;
-use macros::my_vec;
 
 fn main() -> Result<()> {
     let v: Vec<i32> = my_vec![
@@ -13,4 +12,18 @@ fn main() -> Result<()> {
 
     println!("{:?}", v);
     Ok(())
+}
+
+/// my_vec
+#[macro_export]
+macro_rules! my_vec {
+    () => {
+        Vec::new()
+    };
+    ($($x:expr),+$(,)?) => {
+        <[_]>::into_vec(Box::new([$($x),*]))
+    };
+    ($elem:expr; $n:expr) => {
+        std::vec::from_elem($elem, $n)
+    }
 }
